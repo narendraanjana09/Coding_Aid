@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.facebook.react:react-native-community_netinfo:4.1.5-jitsi-7097494@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/22279484a5eb60d54fe662c97a8e28cc/jetified-react-native-community_netinfo-4.1.5-jitsi-7097494/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/22279484a5eb60d54fe662c97a8e28cc/jetified-react-native-community_netinfo-4.1.5-jitsi-7097494/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/22279484a5eb60d54fe662c97a8e28cc/jetified-react-native-community_netinfo-4.1.5-jitsi-7097494/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.react/react-native-community_netinfo/4.1.5-jitsi-7097494/2907173e9423e199115d8f14fa0cd3b58adf2521/react-native-community_netinfo-4.1.5-jitsi-7097494-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

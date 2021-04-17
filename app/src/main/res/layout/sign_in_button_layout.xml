@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/google_round_btn"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    android:padding="5dp"
+    android:onClick="signInToGoogle"
+    >
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/googlepng"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/handlee"
+        android:text="Sign in with Google "
+        android:textColor="@color/whiteextra"
+        android:textSize="18sp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

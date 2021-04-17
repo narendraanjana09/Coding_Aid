@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "1018363210699",
+    "firebase_url": "https://shiksha-aid-default-rtdb.firebaseio.com",
+    "project_id": "shiksha-aid",
+    "storage_bucket": "shiksha-aid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018363210699:android:d1e549acf9616c8cb3244e",
+        "android_client_info": {
+          "package_name": "com.example.codingaidfordev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz5apF_TYUWsavoR_0m6enFgNOX2rY4pA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018363210699:android:ccf6c3fff6fe3ae3b3244e",
+        "android_client_info": {
+          "package_name": "com.example.myadsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz5apF_TYUWsavoR_0m6enFgNOX2rY4pA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-6992515405283697~3786781085"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018363210699:android:88c13eae4e970b92b3244e",
+        "android_client_info": {
+          "package_name": "com.nsa.CodingAid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018363210699-r4v54qcc9ku8b8v30vqjg8jbsi24ouan.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nsa.CodingAid",
+            "certificate_hash": "a44e817c5fbc529bef0acd0fb1061ec7b02062ec"
+          }
+        },
+        {
+          "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz5apF_TYUWsavoR_0m6enFgNOX2rY4pA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
