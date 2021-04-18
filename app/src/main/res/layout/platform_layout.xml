@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:id="@+id/usernameDialog"
+    android:weightSum="1"
+    android:background="@drawable/sign_in_background">
+
+    <TextView
+        android:id="@+id/selectPlatFormTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:fontFamily="@font/handlee"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:text="Select PlatForm👇"
+        android:textColor="@color/whiteextra"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:id="@+id/platFormView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.025"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="1">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.475"
+           >
+
+            <Spinner
+                android:id="@+id/selctPlatformSpinner"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:popupBackground="@drawable/sign_in_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/platformOtherEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/handlee"
+                android:hint="EnterOtherName"
+                android:inputType="textPersonName"
+                android:visibility="invisible"
+                android:textAlignment="center"
+                android:textColor="@color/whiteextra"
+                android:textColorHint="@color/whiteextra"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      <RelativeLayout
+          android:id="@+id/cancel_button_img"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:visibility="invisible"
+          android:layout_weight="0.05">
+          <ImageView
+
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:onClick="cancelOther"
+              android:src="@drawable/cancel"
+              />
+
+      </RelativeLayout>
+        <EditText
+            android:id="@+id/platformEditText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.475"
+            android:fontFamily="@font/handlee"
+            android:hint="PlatForm userName"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            android:textColor="@color/whiteextra"
+            android:textColorHint="@color/whiteextra"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/Upload"
+        android:textAlignment="center"
+        android:layout_weight="0.025"
+        android:layout_gravity="center"
+        android:fontFamily="@font/handlee"
+        android:textAllCaps="false"
+        android:background="@drawable/google_round_btn"
+        android:textColor="@color/whiteextra"
+        android:textSize="20sp"
+        android:onClick="upload"
+        />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:textColor="@color/white"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:fontFamily="@font/handlee"
+    android:text="Your helper account will get verified based on your profile on the Platform you select!☺\nWe will inform You on your verification status."
+    />
+
+</LinearLayout>

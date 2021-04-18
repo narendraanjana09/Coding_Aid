@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,9 @@ public class helperActivity extends AppCompatActivity{
 
     String selectedPlatformName="";
 
+    EditText platformOtherEditText;
+    RelativeLayout cancel_button;
+
 
     Spinner selectPFSpinner;
     ArrayList<String> platformsList;
@@ -87,6 +91,8 @@ public class helperActivity extends AppCompatActivity{
 
         uploadButton=findViewById(R.id.uploadBtn);
         cancelButton=findViewById(R.id.cancelbtn);
+
+
 
 
         recyclerView=findViewById(R.id.helperFieldRecycler);
@@ -180,6 +186,12 @@ public class helperActivity extends AppCompatActivity{
                     Toast.makeText(this, "please enter a valid\n PlatForm Name", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(selectedPlatformName.equals("4")){
+                    selectedPlatformName=platformOtherEditText.getText().toString();
+                    if(selectedPlatformName.length()<=2){
+                        Toast.makeText(this, "Please Enter Valid Platform Name", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 PlatformInfo info = new PlatformInfo(selectedPlatformName, platformName);
                 model = new firebaseModel(name, info, "null",fuser.getUid(),token,false, selectedList);
                 if (!needEdit) {
@@ -242,9 +254,11 @@ public class helperActivity extends AppCompatActivity{
             upload(view);
         }
         else{
-            setContentView(R.layout.username_dialog);
+            setContentView(R.layout.platform_layout);
 
             selectPFSpinner= findViewById(R.id.selctPlatformSpinner);
+            platformOtherEditText=findViewById(R.id.platformOtherEditText);
+            cancel_button=findViewById(R.id.cancel_button_img);
 
             platform_view=findViewById(R.id.platFormView);
             platform_textview=findViewById(R.id.selectPlatFormTextView);
@@ -273,7 +287,9 @@ public class helperActivity extends AppCompatActivity{
                 return i;
             }
         }
-        return 0;
+        platformOtherEditText.setText(platform_name);
+
+        return 4;
     }
 
 
@@ -286,8 +302,14 @@ public class helperActivity extends AppCompatActivity{
                     {
 
 
-
+                        String a=selectedPlatformName;
                         selectedPlatformName = (String)parent.getItemAtPosition(position);
+
+                        if(position==4){
+                            selectedPlatformName=4+"";
+                            otherPFVisible(true,view);
+                        }
+
 
                     }
                     @Override
@@ -295,6 +317,20 @@ public class helperActivity extends AppCompatActivity{
                     {
                     }
                 });
+    }
+
+    private void otherPFVisible(boolean b, View view) {
+        if(b){
+            selectPFSpinner.setVisibility(view.INVISIBLE);
+            cancel_button.setVisibility(View.VISIBLE);
+            platformOtherEditText.setVisibility(View.VISIBLE);
+        }else{
+            selectPFSpinner.setVisibility(View.VISIBLE);
+            selectPFSpinner.setSelection(0);
+            cancel_button.setVisibility(View.INVISIBLE);
+            platformOtherEditText.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private void getList() {
@@ -305,8 +341,7 @@ public class helperActivity extends AppCompatActivity{
         platformsList.add("CodeChef");
         platformsList.add("GFG");
         platformsList.add("LeetCode");
-
-
+        platformsList.add("Other");
     }
 
 
@@ -320,4 +355,7 @@ public class helperActivity extends AppCompatActivity{
     }
 
 
+    public void cancelOther(View view) {
+        otherPFVisible(false, view);
+    }
 }
