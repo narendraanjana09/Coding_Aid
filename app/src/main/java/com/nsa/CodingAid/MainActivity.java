@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity{
 
         for(int i=0;i<model.getFields().size();i++){
             if(b){
-                reference_fields.child(model.getFields().get(i)).child(model.getId()).setValue("available");
+                reference_fields.child(model.getFields().get(i)).child(model.getId()).setValue(model.getName());
             }else{
                 reference_fields.child(model.getFields().get(i)).child(model.getId()).removeValue();
             }
