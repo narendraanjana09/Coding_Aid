@@ -3,13 +3,16 @@ package com.nsa.CodingAid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.nsa.CodingAid.ExtraClasses.BackgroundService;
+import com.nsa.CodingAid.Services.BackgroundService;
 import com.nsa.CodingAid.ExtraClasses.Firebase;
 import com.nsa.CodingAid.ExtraClasses.clearALlCall;
 import com.nsa.CodingAid.Model.firebaseModel;
@@ -19,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.nsa.CodingAid.Services.NetworkChangeReceiver;
 
 import org.jitsi.meet.sdk.BroadcastIntentHelper;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
@@ -35,14 +39,13 @@ public class MainActivity extends AppCompatActivity{
     DatabaseReference reference_users,reference_fields ;
 
 
-
+    private BroadcastReceiver NetworkChangeReceiver = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
-        Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT).show();
         fuser=FirebaseAuth.getInstance().getCurrentUser();
         reference_users=new Firebase().getReference_users();
         reference_fields=new Firebase().getReference_fields();
@@ -59,6 +62,11 @@ public class MainActivity extends AppCompatActivity{
         }
         new clearALlCall(getApplicationContext());
         startService(new Intent(getBaseContext(), BackgroundService.class));
+        NetworkChangeReceiver = new NetworkChangeReceiver();
+        broadcastIntent();
+    }
+    public void broadcastIntent() {
+        registerReceiver(NetworkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void getlist() {
@@ -84,6 +92,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onResume() {
         super.onResume();
+        broadcastIntent();
         reference_users.child(fuser.getUid()).child("online").setValue(false);
         Intent hangupBroadcastIntent = BroadcastIntentHelper.buildHangUpIntent();
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(hangupBroadcastIntent);
@@ -91,7 +100,11 @@ public class MainActivity extends AppCompatActivity{
             createChanges(false);
         }
     }
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(NetworkChangeReceiver);
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

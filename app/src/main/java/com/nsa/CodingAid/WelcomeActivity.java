@@ -3,9 +3,12 @@ package com.nsa.CodingAid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -39,7 +42,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static java.util.ResourceBundle.clearCache;
+
+import com.nsa.CodingAid.Services.NetworkChangeReceiver;
 
 public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnMenuItemClickListener  {
     private GoogleSignInAccount acc;
@@ -56,6 +60,7 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
     public boolean fieldExist;
     boolean verified=false;
     FirebaseUser fuser;
+    private BroadcastReceiver NetworkChangeReceiver = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +100,22 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
 
 
         new clearALlCall(getApplicationContext());
+        NetworkChangeReceiver = new NetworkChangeReceiver();
+        broadcastIntent();
+    }
+    public void broadcastIntent() {
+        registerReceiver(NetworkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        broadcastIntent();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(NetworkChangeReceiver);
     }
 
     public void signOut(View view) {

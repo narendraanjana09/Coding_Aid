@@ -15,7 +15,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.nsa.CodingAid.Adapter.NeedHelpAdapter;
-import com.nsa.CodingAid.ExtraClasses.BackgroundService;
+import com.nsa.CodingAid.Services.BackgroundService;
 import com.nsa.CodingAid.ExtraClasses.Firebase;
 import com.nsa.CodingAid.ExtraClasses.LoadingDialog;
 import com.nsa.CodingAid.ExtraClasses.clearALlCall;
