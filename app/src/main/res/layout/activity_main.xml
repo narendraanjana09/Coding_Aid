@@ -4,17 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/sign_in_background"
+    android:background="@drawable/background1"
     android:layout_height="match_parent"
     android:weightSum="1"
     tools:context=".MainActivity">
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/handlee"
+        android:textStyle="bold"
+        android:textColor="@color/whiteextra"
+        android:textSize="25sp"
+        android:layout_marginTop="5dp"
+        android:text="Coding Aid"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="5dp"
         android:layout_weight="0.4"
-        android:weightSum="8"
+        android:weightSum="6"
         >
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView1"
@@ -64,22 +76,7 @@
             app:adSize="BANNER"
             app:adUnitId="@string/adsUnitId2"
             ></com.google.android.gms.ads.AdView>
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView7"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:adSize="BANNER"
-            app:adUnitId="@string/adsUnitId2"
-            ></com.google.android.gms.ads.AdView>
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView8"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:adSize="BANNER"
-            app:adUnitId="@string/adsUnitId2"
-            ></com.google.android.gms.ads.AdView>
+
 
 
     </LinearLayout>
@@ -94,12 +91,13 @@
         android:id="@+id/codetxt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/cloud_message_text"
         android:padding="10dp"
         android:text="Glad To See You Helper!🤗"
         android:textAlignment="center"
+        android:fontFamily="@font/handlee"
+        android:textStyle="bold"
         android:textColor="@color/whiteextra"
-        android:textSize="22sp"
+        android:textSize="25sp"
         android:layout_marginBottom="30dp"
         />
 
@@ -108,11 +106,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/cloud_message_text"
         android:text="Connect to the server thus \nsomeone can see you👇"
         android:textAlignment="center"
+        android:fontFamily="@font/handlee"
+        android:textStyle="bold"
         android:textColor="@color/whiteextra"
-        android:textSize="22sp"
+        android:textSize="25sp"
       />
 </LinearLayout>
     <LinearLayout
@@ -129,11 +128,13 @@
         android:layout_height="wrap_content"
         android:background="@drawable/google_round_btn"
         android:onClick="editFields"
-        android:padding="5dp"
+        android:fontFamily="@font/handlee"
+        android:padding="10dp"
+        android:textStyle="bold"
         android:text="Edit Fields"
         android:textAllCaps="false"
-        android:textColor="@color/whiteextra"
-        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         />
         <View
             android:layout_width="0dp"
@@ -147,8 +148,12 @@
             android:background="@drawable/google_round_btn"
             android:onClick="connect"
             android:text="Connect"
+            android:padding="10dp"
+            android:fontFamily="@font/handlee"
+            android:textStyle="bold"
             android:textAllCaps="false"
-            android:textColor="@color/whiteextra"
+            android:textSize="20sp"
+            android:textColor="@color/black"
             />
 
 

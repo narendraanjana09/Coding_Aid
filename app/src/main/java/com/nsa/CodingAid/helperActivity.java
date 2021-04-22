@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.nsa.CodingAid.Adapter.CustomAdapter;
 import com.nsa.CodingAid.Adapter.PlatformSpinnerAdapter;
@@ -47,7 +48,7 @@ public class helperActivity extends AppCompatActivity{
 
     DatabaseReference reference_users,reference_fields;
     private FirebaseUser fuser;
-    Button uploadButton,cancelButton;
+    FloatingActionButton uploadButton,cancelButton;
     public int counter=0;
 
     LinearLayout platform_view;
@@ -60,7 +61,7 @@ public class helperActivity extends AppCompatActivity{
     String selectedPlatformName="";
 
     EditText platformOtherEditText;
-    RelativeLayout cancel_button;
+    RelativeLayout Pf_cancel_button;
 
 
     Spinner selectPFSpinner;
@@ -201,7 +202,7 @@ public class helperActivity extends AppCompatActivity{
                 }
             }
             reference_users.child(model.getId()).setValue(model);
-
+            Toast.makeText(this, "Data Uploaded", Toast.LENGTH_SHORT).show();
             nextPage();
 
         }
@@ -237,9 +238,9 @@ public class helperActivity extends AppCompatActivity{
 
     public void updateCounter(int counter) {
         if(counter==0){
-            itemCounttxt.setText("0 Items Selected");
+            itemCounttxt.setText("0 Selected");
         }else{
-            itemCounttxt.setText(counter+" items selected");
+            itemCounttxt.setText(counter+" Selected");
         }
 
     }
@@ -260,7 +261,7 @@ public class helperActivity extends AppCompatActivity{
 
             selectPFSpinner= findViewById(R.id.selctPlatformSpinner);
             platformOtherEditText=findViewById(R.id.platformOtherEditText);
-            cancel_button=findViewById(R.id.cancel_button_img);
+            Pf_cancel_button=findViewById(R.id.cancel_button_img);
 
             platform_view=findViewById(R.id.platFormView);
             platform_textview=findViewById(R.id.selectPlatFormTextView);
@@ -324,12 +325,12 @@ public class helperActivity extends AppCompatActivity{
     private void otherPFVisible(boolean b, View view) {
         if(b){
             selectPFSpinner.setVisibility(view.INVISIBLE);
-            cancel_button.setVisibility(View.VISIBLE);
+            Pf_cancel_button.setVisibility(View.VISIBLE);
             platformOtherEditText.setVisibility(View.VISIBLE);
         }else{
             selectPFSpinner.setVisibility(View.VISIBLE);
             selectPFSpinner.setSelection(0);
-            cancel_button.setVisibility(View.INVISIBLE);
+            Pf_cancel_button.setVisibility(View.INVISIBLE);
             platformOtherEditText.setVisibility(View.INVISIBLE);
         }
 

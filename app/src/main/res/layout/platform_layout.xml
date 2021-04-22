@@ -7,7 +7,7 @@
     android:gravity="center_vertical"
     android:id="@+id/usernameDialog"
     android:weightSum="1"
-    android:background="@drawable/sign_in_background">
+    android:background="@drawable/background1">
 
     <TextView
         android:id="@+id/selectPlatFormTextView"
@@ -16,6 +16,7 @@
         android:layout_weight="0.3"
         android:fontFamily="@font/handlee"
         android:layout_marginBottom="10dp"
+        android:textStyle="bold"
         android:gravity="center"
         android:padding="5dp"
         android:layout_marginStart="10dp"
@@ -42,7 +43,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:popupBackground="@drawable/sign_in_background"
+                android:popupBackground="@drawable/background1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,6 +88,7 @@
             android:layout_weight="0.475"
             android:fontFamily="@font/handlee"
             android:hint="PlatForm userName"
+            android:textStyle="bold"
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textColor="@color/whiteextra"
@@ -107,7 +109,7 @@
         android:fontFamily="@font/handlee"
         android:textAllCaps="false"
         android:background="@drawable/google_round_btn"
-        android:textColor="@color/whiteextra"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:onClick="upload"
         />
@@ -116,7 +118,7 @@
     android:layout_height="wrap_content"
     android:textSize="20sp"
     android:textColor="@color/white"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="30dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     android:fontFamily="@font/handlee"

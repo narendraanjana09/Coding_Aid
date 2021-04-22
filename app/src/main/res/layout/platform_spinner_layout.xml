@@ -15,6 +15,7 @@
         android:text="linkedin"
         android:fontFamily="@font/handlee"
         android:textSize="20sp"
+        android:textStyle="bold"
         android:textColor="@color/whiteextra"
         android:textAlignment="center"
         />

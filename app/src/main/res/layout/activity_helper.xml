@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sign_in_background"
+    android:background="@drawable/background1"
     tools:context=".helperActivity"
     android:orientation="vertical">
 
@@ -14,52 +14,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-
+        android:weightSum="1"
         android:padding="5dp"
         >
-
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="0.5"
+            android:text="Select Fields"
+            android:textStyle="bold"
+            android:textColor="@color/whiteextra"
+            android:textSize="22sp" />
         <TextView
             android:id="@+id/countTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_weight="4"
-            android:text="0 Items Selected"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:layout_weight="0.5"
+            android:padding="5dp"
+            android:textAlignment="textEnd"
+            android:text="0 Selected"
+            android:textColor="@color/whiteextra"
+            android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/cancelbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_btn"
-            android:gravity="center"
-            android:layout_marginEnd="5dp"
-            android:onClick="cancelEdit"
-            android:text="Cancel"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/uploadBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="uploadData"
-            android:background="@drawable/round_btn"
-            android:textAllCaps="false"
-            android:text="Upload"
-            android:textColor="@color/white"
-            />
 
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/helperFieldRecycler"
+        android:layout_below="@+id/llayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
        />
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cancelbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="cancelEdit"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="60dp"
+        android:src="@drawable/cancel"
+        android:visibility="invisible"
+        app:fabSize="normal" />
 
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/uploadBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="uploadData"
+        app:fabSize="normal"
+        android:layout_margin="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/done"
+        />
+
+</RelativeLayout>

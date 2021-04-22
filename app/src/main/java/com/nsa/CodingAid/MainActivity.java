@@ -102,8 +102,7 @@ public class MainActivity extends AppCompatActivity{
         adViewList.add(findViewById(R.id.adView4));
         adViewList.add(findViewById(R.id.adView5));
         adViewList.add(findViewById(R.id.adView6));
-        adViewList.add(findViewById(R.id.adView7));
-        adViewList.add(findViewById(R.id.adView8));
+
 
 
         AdRequest adRequest = new AdRequest.Builder().build();

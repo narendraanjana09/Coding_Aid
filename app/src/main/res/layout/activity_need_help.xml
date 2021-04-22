@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/sign_in_background"
+    android:background="@drawable/background1"
     tools:context=".needHelpActivity">
     <TextView
         android:id="@+id/infoTextView"
@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:text="☹ No Teacher Available"
-        android:textColor="@color/white"
+        android:textColor="@color/whiteextra"
         android:textSize="18sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/need_help_rv"

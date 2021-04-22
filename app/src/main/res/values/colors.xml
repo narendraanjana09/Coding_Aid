@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="Dark">#3F3E40</color>
-    <color name="theme1">#2F4C53</color>
+    <color name="theme1">#CD659999</color>
     <color name="theme2">#505D61</color>
     <color name="Dark1">#676766</color>
     <color name="white">#D3D3D3</color>
     <color name="whiteextra">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="dark2">#A4A1A1A1</color>
 </resources>
