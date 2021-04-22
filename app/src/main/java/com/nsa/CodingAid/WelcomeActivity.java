@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -19,7 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+
 import com.nsa.CodingAid.ExtraClasses.Firebase;
 
 import com.nsa.CodingAid.ExtraClasses.ProgressBar;
@@ -45,6 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.nsa.CodingAid.Model.firebaseModel;
 import com.nsa.CodingAid.Services.NetworkChangeReceiver;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +68,10 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
     boolean verified=false;
     FirebaseUser fuser;
     private BroadcastReceiver NetworkChangeReceiver = null;
+
+    String prevStarted = "verified";
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +111,8 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
         infoText.setPaintFlags(infoText.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
         Uri imageUri=acc.getPhotoUrl();
-        Glide.with(this).load(imageUri).into(profileIMg);
+        Picasso.get().load(imageUri).into(profileIMg);
+
 
 
         reference_users = new Firebase().getReference_users();
@@ -113,6 +121,8 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
         new clearALlCall(getApplicationContext());
         NetworkChangeReceiver = new NetworkChangeReceiver();
         broadcastIntent();
+         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+
     }
     public void broadcastIntent() {
         registerReceiver(NetworkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -141,9 +151,12 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
     }
 
     public void helperActivity(View view) {
-        progressBar.show();
-        check();
-
+        if (sharedpreferences.getBoolean(prevStarted, false)){
+            goToMainActivity();
+        }else {
+            progressBar.show();
+            check();
+        }
     }
 
     private void check() {
@@ -155,6 +168,7 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
                     firebaseModel model=dataSnapshot.getValue(firebaseModel.class);
                     fieldExist=true;
                     if(model.isVerified()){
+                        setSharedPrefernces();
                         verified=true;
                     }else if(model.getName()==null){
                         fieldExist=false;
@@ -177,6 +191,13 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
             }
         });
     }
+
+    private void setSharedPrefernces() {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(prevStarted, Boolean.TRUE);
+        editor.apply();
+    }
+
     public void gotoHelper(boolean b){
 
         Intent intent=new Intent(WelcomeActivity.this,helperActivity.class);
@@ -184,12 +205,15 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
         intent.putExtra("verified", "false");
         startActivity(intent);
     }
+    public void goToMainActivity(){
+        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
     public void nextActvity(boolean fieldExist){
         if(fieldExist){
             if(verified) {
-                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                startActivity(intent);
+               goToMainActivity();
             }else{
                 notVerified();
 

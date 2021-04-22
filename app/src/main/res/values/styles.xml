@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/theme1</item>
         <item name="colorPrimaryDark">@color/theme1</item>
         <item name="colorAccent">@color/theme1</item>
+        <item name="android:itemBackground">@drawable/sign_in_background</item>
+        <item name="android:textColor">@color/whiteextra</item>
     </style>
 
 </resources>

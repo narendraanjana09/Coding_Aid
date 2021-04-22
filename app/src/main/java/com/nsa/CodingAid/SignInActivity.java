@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
+import com.nsa.CodingAid.ExtraClasses.ProgressBar;
 import com.nsa.CodingAid.ExtraClasses.clearALlCall;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,6 +32,7 @@ public class SignInActivity extends AppCompatActivity {
      private String TAG="SignInActivity";
      private FirebaseAuth mfirebaseAuth;
     private int  RC_SIGN_IN=1;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
        mfirebaseAuth=FirebaseAuth.getInstance();
+       progressBar=new ProgressBar(SignInActivity.this,"connecting...");
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -68,6 +71,7 @@ public class SignInActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+            progressBar.show();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -104,6 +108,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+        progressBar.hide();
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if(account!=null){
             String name=account.getDisplayName();

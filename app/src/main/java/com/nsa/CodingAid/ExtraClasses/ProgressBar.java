@@ -5,10 +5,10 @@ import android.content.Context;
 
 public class ProgressBar {
     private ProgressDialog progressDialog;
-    public ProgressBar(Context context,String content) {
+    public ProgressBar(Context context,String message) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage(content);
+        progressDialog.setMessage(message);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setProgress(0);
     }
