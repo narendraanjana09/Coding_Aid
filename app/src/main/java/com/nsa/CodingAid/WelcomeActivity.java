@@ -43,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
+import com.nsa.CodingAid.Model.firebaseModel;
 import com.nsa.CodingAid.Services.NetworkChangeReceiver;
 
 public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnMenuItemClickListener  {
@@ -141,14 +142,17 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String verification=dataSnapshot.child("verified").getValue().toString();
-                    if(verification.equals("true")){
+                    firebaseModel model=dataSnapshot.getValue(firebaseModel.class);
+                    fieldExist=true;
+                    if(model.isVerified()){
                         verified=true;
+                    }else if(model.getName()==null){
+                        fieldExist=false;
                     }else{
                         verified=false;
                     }
-                    fieldExist=true;
-                } else {
+
+                }else {
                     fieldExist = false;
 
                 }

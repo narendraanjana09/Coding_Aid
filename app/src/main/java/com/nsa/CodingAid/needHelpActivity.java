@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nsa.CodingAid.Adapter.NeedHelpAdapter;
 import com.nsa.CodingAid.Services.BackgroundService;
@@ -36,6 +37,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class needHelpActivity extends AppCompatActivity {
 
@@ -46,14 +48,12 @@ public class needHelpActivity extends AppCompatActivity {
     firebaseModel model1,model2;
     NeedHelpAdapter needHelpAdapter;
     List<availableFieldModel> list=new ArrayList<>();
-    List<String> allreadyConnList=new ArrayList<>();//All Ready Connected teacher list
+
     boolean teacherOnline=false;
 
     FirebaseUser fuser= FirebaseAuth.getInstance().getCurrentUser();;
 
-    int count=0;
 
-    List<AlertDialog> alertList=new ArrayList<>();
     LoadingDialog loadingDialog;
 
 
@@ -64,10 +64,6 @@ public class needHelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_need_help);
 
         infoTxt=findViewById(R.id.infoTextView);
-        reference_users.child(fuser.getUid()).child("connectedTeacher").setValue("null");
-
-
-
         recyclerView=findViewById(R.id.need_help_rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -84,7 +80,6 @@ public class needHelpActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        new Firebase().getReference_users().child(fuser.getUid()).child("online").setValue(true);
 
         new clearALlCall(getApplicationContext());
         startService(new Intent(getBaseContext(), BackgroundService.class));
@@ -129,114 +124,26 @@ public class needHelpActivity extends AppCompatActivity {
 
     }
 
-    public  void searchField(availableFieldModel subjectName, Context context) {
+    public  void searchField(availableFieldModel model, Context context) {
         loadingDialog=new LoadingDialog((Activity) context);
         loadingDialog.startLoadingDialog();
-        getAlreadyConnecTeacherList(subjectName,context,loadingDialog);
+        connnectToRandom(model,context,loadingDialog);
+
 
     }
-    private void connectField(availableFieldModel subjectName, Context context) {
-        loadingDialog= new LoadingDialog((Activity)context);
-        loadingDialog.startLoadingDialog();
-        boolean connected=false;
-
-        for(int i=0;i<subjectName.getAvaiableList().size();i++){
-            String key=subjectName.getAvaiableList().get(i);
-            if(allreadyConnList.contains(key)){
-                connected=false;
-                continue;
-            }else{
-                loadingDialog.dismissDialog();
-                connected=true;
-                connectToJitsi(key, context);
-                break;
-            }
-        }
-        if(!connected){
-
-            for(int i=0;i<subjectName.getAvaiableList().size();i++){
-                String key=subjectName.getAvaiableList().get(i);
-                if(allreadyConnList.contains(key)){
-
-                    loadingDialog.dismissDialog();
-                    wanttoConnect(context,key);
-
-                }
-            }
-        }
+    public int getRandomValue(int Max)
+    {
+        return ThreadLocalRandom
+                .current()
+                .nextInt(0, Max + 1);
+    }
+    private void connnectToRandom(availableFieldModel model, Context context, LoadingDialog loadingDialog) {
+        int random=getRandomValue(model.getAvaiableList().size()-1);
+        String key=model.getAvaiableList().get(random);
+        loadingDialog.dismissDialog();
+        connectToJitsi(key,context);
 
     }
-
-    private void wanttoConnect(Context context, String key) {
-
-
-        count++;
-
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("Would You Like to Connect To \n Same Teacher You Connected earlier          " + count);
-        builder1.setCancelable(false);
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        connectToJitsi(key, context);
-                        count--;
-                        dialog.cancel();
-                        dismissAll();
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        count--;
-                        dialog.cancel();
-
-                    }
-                });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-        alertList.add(alert11);
-
-    }
-
-    private void dismissAll() {
-        count=0;
-        for(AlertDialog alertDialog:alertList){
-            alertDialog.dismiss();
-        }
-    }
-
-
-    private void getAlreadyConnecTeacherList(availableFieldModel subjectName, Context context, LoadingDialog loadingDialog) {
-        reference_users.child(fuser.getUid()).child("connectedWith").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String key="";
-
-                    for (DataSnapshot childDataSnapshot : snapshot.getChildren()) {
-                        key = childDataSnapshot.getKey();
-                        allreadyConnList.add(key);
-                    }
-
-
-                }else{
-
-                    allreadyConnList.clear();
-                }
-                loadingDialog.dismissDialog();
-                connectField(subjectName,context);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
 
 
 
@@ -253,7 +160,7 @@ public class needHelpActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     model1 = dataSnapshot.getValue(firebaseModel.class);
-                    if(!model1.getConnectedTeacher().equals("null")){
+                    if(!(model1.getConnectedTeacher() ==null) &&!model1.getConnectedTeacher().equals("null")){
                         checkOnline(model1.getConnectedTeacher());
                         getList(model1.getConnectedTeacher(),false);
 
@@ -273,11 +180,12 @@ public class needHelpActivity extends AppCompatActivity {
     }
 
     private void checkOnline(String connectedTeacher) {
-        reference_users.child(connectedTeacher).child("online").addValueEventListener(new ValueEventListener() {
+        reference_users.child(connectedTeacher).child("online").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     teacherOnline= (boolean) snapshot.getValue();
+
                 }
 
             }
@@ -290,28 +198,25 @@ public class needHelpActivity extends AppCompatActivity {
     }
 
     private void createChanges(boolean delete,firebaseModel model) {
-        if(!delete) {
-            reference_users.child(fuser.getUid()).child("connectedTeacher").setValue("null");
-        }
+
         for(int i=0;i<model.getFields().size();i++){
             if(!delete){
                 if(teacherOnline) {
-                    reference_fields.child(model.getFields().get(i)).child(model.getId()).setValue("available");
+                    reference_fields.child(model.getFields().get(i)).child(model.getId()).setValue(model.getName());
                 }}else{
                 if(!teacherOnline){
                     reference_fields.child(model.getFields().get(i)).child(model.getId()).removeValue();
                 }}
         }
 
+
     }
     private void connectToJitsi(String key, Context context) {
 
 
 
-        reference_users.child(fuser.getUid()).child("connectedWith").child(key).setValue(true);
-        reference_users.child(fuser.getUid()).child("connectedTeacher").setValue(key);
         getList(key,true);
-
+        reference_users.child(fuser.getUid()).child("connectedTeacher").setValue(key);
 
         JitsiMeetUserInfo userInfo=new JitsiMeetUserInfo();
         Uri uri=fuser.getPhotoUrl();

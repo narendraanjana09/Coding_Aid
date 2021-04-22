@@ -8,35 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1018363210699:android:d1e549acf9616c8cb3244e",
-        "android_client_info": {
-          "package_name": "com.example.codingaidfordev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAz5apF_TYUWsavoR_0m6enFgNOX2rY4pA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:1018363210699:android:ccf6c3fff6fe3ae3b3244e",
         "android_client_info": {
           "package_name": "com.example.myadsapp"
@@ -51,6 +22,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyAz5apF_TYUWsavoR_0m6enFgNOX2rY4pA"
+        },
+        {
+          "current_key": "AIzaSyC5vPGsyJFSEEEFBN5syddHYGrlCkNCn5o"
         }
       ],
       "services": {
@@ -74,11 +48,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "1018363210699-5boc4n14q86435q7dvlq6dcirmebgk1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nsa.CodingAid",
+            "certificate_hash": "66e9fc5ad0984d7df425b7f699764e81fbd9643a"
+          }
+        },
+        {
           "client_id": "1018363210699-r4v54qcc9ku8b8v30vqjg8jbsi24ouan.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.nsa.CodingAid",
             "certificate_hash": "a44e817c5fbc529bef0acd0fb1061ec7b02062ec"
+          }
+        },
+        {
+          "client_id": "1018363210699-teuo89o0leou5b00jt04p6s1h0rathuf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nsa.CodingAid",
+            "certificate_hash": "05ccc2703e376646ba4345f8f2a71d3c0bf32c4e"
           }
         },
         {
@@ -89,6 +79,42 @@
       "api_key": [
         {
           "current_key": "AIzaSyAz5apF_TYUWsavoR_0m6enFgNOX2rY4pA"
+        },
+        {
+          "current_key": "AIzaSyC5vPGsyJFSEEEFBN5syddHYGrlCkNCn5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-6992515405283697~9989652387"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018363210699:android:28253b7e0329d574b3244e",
+        "android_client_info": {
+          "package_name": "com.nsa.CodingAidDev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018363210699-7s10u1k3sre59p70gdhbrip2dog2lv1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz5apF_TYUWsavoR_0m6enFgNOX2rY4pA"
+        },
+        {
+          "current_key": "AIzaSyC5vPGsyJFSEEEFBN5syddHYGrlCkNCn5o"
         }
       ],
       "services": {
