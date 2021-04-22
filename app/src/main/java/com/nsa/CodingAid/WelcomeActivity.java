@@ -46,6 +46,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import com.nsa.CodingAid.Model.firebaseModel;
 import com.nsa.CodingAid.Services.NetworkChangeReceiver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnMenuItemClickListener  {
     private GoogleSignInAccount acc;
     private CircleImageView profileIMg;
@@ -54,8 +57,8 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
 
     ProgressBar progressBar;
 
-    private AdView mAdView;
 
+    private List<AdView> adViewList;
 
     DatabaseReference reference_users;
     public boolean fieldExist;
@@ -74,10 +77,17 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
+        adViewList=new ArrayList<>();
+        adViewList.add(findViewById(R.id.adView1));
+        adViewList.add(findViewById(R.id.adView2));
+        adViewList.add(findViewById(R.id.adView3));
 
-        mAdView = findViewById(R.id.adView1);
+
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        for(AdView adView:adViewList){
+            adView.loadAd(adRequest);
+        }
+
 
         profileIMg=findViewById(R.id.profile_image);
         infoText=findViewById(R.id.infotxt);

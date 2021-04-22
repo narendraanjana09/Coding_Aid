@@ -1,17 +1,28 @@
 package com.nsa.CodingAid;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nsa.CodingAid.Services.BackgroundService;
 import com.nsa.CodingAid.ExtraClasses.Firebase;
 import com.nsa.CodingAid.ExtraClasses.clearALlCall;
@@ -31,21 +42,25 @@ import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
     String sessionId;
     FirebaseUser fuser;
     firebaseModel model;
     DatabaseReference reference_users,reference_fields ;
-
-
+    String prevStarted = "prevStarted";
     private BroadcastReceiver NetworkChangeReceiver = null;
+
+    private List<AdView> adViewList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        adViewList=new ArrayList<>();
+         getAds();
         fuser=FirebaseAuth.getInstance().getCurrentUser();
         reference_users=new Firebase().getReference_users();
         reference_fields=new Firebase().getReference_fields();
@@ -64,6 +79,52 @@ public class MainActivity extends AppCompatActivity{
         startService(new Intent(getBaseContext(), BackgroundService.class));
         NetworkChangeReceiver = new NetworkChangeReceiver();
         broadcastIntent();
+
+        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+        if (!sharedpreferences.getBoolean(prevStarted, false)) {
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putBoolean(prevStarted, Boolean.TRUE);
+            editor.apply();
+            subscribeUserForNotification();
+        }
+    }
+
+    private void getAds() {
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        adViewList.add(findViewById(R.id.adView1));
+        adViewList.add(findViewById(R.id.adView2));
+        adViewList.add(findViewById(R.id.adView3));
+        adViewList.add(findViewById(R.id.adView4));
+        adViewList.add(findViewById(R.id.adView5));
+        adViewList.add(findViewById(R.id.adView6));
+        adViewList.add(findViewById(R.id.adView7));
+        adViewList.add(findViewById(R.id.adView8));
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        for(AdView adView:adViewList){
+            adView.loadAd(adRequest);
+        }
+    }
+
+    private void subscribeUserForNotification() {
+        FirebaseMessaging.getInstance().subscribeToTopic("IAmAHelper")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed To Notifications";
+                        if (!task.isSuccessful()) {
+                            msg = "Can't To Notifications";
+                        }
+
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
     public void broadcastIntent() {
         registerReceiver(NetworkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));

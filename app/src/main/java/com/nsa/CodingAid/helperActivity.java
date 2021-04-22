@@ -195,6 +195,7 @@ public class helperActivity extends AppCompatActivity{
                 PlatformInfo info = new PlatformInfo(selectedPlatformName, platformName);
                 model = new firebaseModel(name, info, "null",fuser.getUid(),token,false, selectedList);
                 if (!needEdit) {
+
                     DatabaseReference reference = new Firebase().getFirebaseDatabase().getReference("newhelpers");
                     reference.child(model.getId()).setValue(name);
                 }
@@ -206,6 +207,7 @@ public class helperActivity extends AppCompatActivity{
         }
 
     }
+
 
     private void getToken() {
         FirebaseMessaging.getInstance().getToken()

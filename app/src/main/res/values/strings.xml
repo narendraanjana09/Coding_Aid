@@ -4,8 +4,13 @@
     <string name="Complete">Complete</string>
     <string name="todo">TODO</string>
     <string name="threedot">⋮</string>
-    <string name="appIdForAds">ca-app-pub-6992515405283697~9067560759</string>
+    <string name="testappIdforads">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="testAdUnit">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="appIdForAds">ca-app-pub-6992515405283697~9989652387</string>
     <string name="adsUnitId1">ca-app-pub-6992515405283697/4908823898</string>
+    <string name="adsUnitId2">ca-app-pub-6992515405283697/5160933319</string>
+    <string name="adsUnitId3">ca-app-pub-6992515405283697/7839067549</string>
     <string name="server_client_id">1018363210699-vcgp8ophisr9hjfn1qmv8meqqv9q478o.apps.googleusercontent.com</string>
 
 
