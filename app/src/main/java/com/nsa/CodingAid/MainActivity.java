@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity{
                             msg = "Can't To Notifications";
                         }
 
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
                     }
                 });
     }

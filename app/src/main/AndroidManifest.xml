@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nsa.CodingAid">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -14,21 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/appIdForAds"/>
+            android:value="@string/appIdForAds" />
+
         <service
-            android:name="com.nsa.CodingAid.Services.BackgroundService"
-            android:stopWithTask="false" >
-        </service>
-        <activity android:name="com.nsa.CodingAid.helperActivity"></activity>
-        <activity android:name="com.nsa.CodingAid.needHelpActivity" />
-        <activity android:name="com.nsa.CodingAid.WelcomeActivity" />
-        <activity android:name="com.nsa.CodingAid.MainActivity"
-            android:launchMode="singleTask"
-            />
-        <activity android:name="com.nsa.CodingAid.infoActivity" />
-        <activity android:name="com.nsa.CodingAid.SignInActivity">
+            android:name=".Services.BackgroundService"
+            android:stopWithTask="false"></service>
+
+        <activity android:name=".helperActivity" />
+        <activity android:name=".needHelpActivity" />
+        <activity android:name=".WelcomeActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".infoActivity" />
+        <activity android:name=".SignInActivity"/>
+        <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,19 +43,21 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <service android:name="com.nsa.CodingAid.Services.FirebaseMessageReceiver">
+
+        <service android:name=".Services.FirebaseMessageReceiver">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <receiver android:name = ".Services.NetworkChangeReceiver">
+
+        <receiver android:name=".Services.NetworkChangeReceiver">
             <intent-filter>
-                <action android:name = "android.net.conn.CONNECTIVITY_CHANGE"
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
                     tools:ignore="BatteryLife" />
-                <action android:name = "android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

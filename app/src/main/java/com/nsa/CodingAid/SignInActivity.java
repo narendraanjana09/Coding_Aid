@@ -3,7 +3,9 @@ package com.nsa.CodingAid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,12 +35,16 @@ public class SignInActivity extends AppCompatActivity {
      private FirebaseAuth mfirebaseAuth;
     private int  RC_SIGN_IN=1;
     ProgressBar progressBar;
-
+    String prevStarted = "SignedIn";
+    SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
+        sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+        if (sharedpreferences.getBoolean(prevStarted, false)){
+            updateUI();
+        }
        mfirebaseAuth=FirebaseAuth.getInstance();
        progressBar=new ProgressBar(SignInActivity.this,"connecting...");
 
@@ -55,14 +61,13 @@ public class SignInActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-
-        updateUI();
+    private void setPreferences() {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(prevStarted, Boolean.TRUE);
+        editor.apply();
     }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -83,6 +88,7 @@ public class SignInActivity extends AppCompatActivity {
             Toast.makeText(SignInActivity.this, "Google SignIn SuccessFull", Toast.LENGTH_SHORT).show();
             firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
+            progressBar.hide();
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
@@ -99,19 +105,21 @@ public class SignInActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Toast.makeText(SignInActivity.this, "SuccessFull", Toast.LENGTH_SHORT).show();
 
+                    setPreferences();
                     updateUI();
                 }else{
                     Toast.makeText(SignInActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
+                progressBar.hide();
             }
         });
     }
 
     private void updateUI() {
-        progressBar.hide();
+
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if(account!=null){
-            String name=account.getDisplayName();
+
             Intent intent=new Intent(SignInActivity.this,WelcomeActivity.class);
             startActivity(intent);
             finish();
