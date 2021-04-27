@@ -57,6 +57,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_margin="60dp"
+        android:backgroundTint="@color/background1"
         android:src="@drawable/cancel"
         android:visibility="invisible"
         app:fabSize="normal" />
@@ -67,6 +68,7 @@
         android:layout_height="wrap_content"
         android:onClick="uploadData"
         app:fabSize="normal"
+        android:backgroundTint="@color/background1"
         android:layout_margin="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

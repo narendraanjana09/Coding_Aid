@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,9 +13,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.view.View;
+import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.nsa.CodingAid.Adapter.NeedHelpAdapter;
 import com.nsa.CodingAid.Services.BackgroundService;
 import com.nsa.CodingAid.ExtraClasses.Firebase;
@@ -36,18 +43,22 @@ import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class needHelpActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    TextView infoTxt;
+    TextView infoTxt,countDownTextView;
     DatabaseReference reference_fields=new Firebase().getReference_fields()
             ,reference_users=new Firebase().getReference_users();
     firebaseModel model1,model2;
     NeedHelpAdapter needHelpAdapter;
     List<availableFieldModel> list=new ArrayList<>();
+
+    SwipeRefreshLayout swipeRefreshLayout;
 
     boolean teacherOnline=false;
 
@@ -55,6 +66,7 @@ public class needHelpActivity extends AppCompatActivity {
 
 
     LoadingDialog loadingDialog;
+    boolean first_time=false;
 
 
 
@@ -64,14 +76,23 @@ public class needHelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_need_help);
 
         infoTxt=findViewById(R.id.infoTextView);
+        countDownTextView=findViewById(R.id.countDownTextView);
         recyclerView=findViewById(R.id.need_help_rv);
+        swipeRefreshLayout=findViewById(R.id.swipeRefreshLayout);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         needHelpAdapter= new NeedHelpAdapter(needHelpActivity.this,list);
         recyclerView.setAdapter(needHelpAdapter);
-
+        swipeRefreshLayout.setRefreshing(true);
         getAvailableList();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAvailableList();
+            }
+        });
         try {
             JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
                     .setServerURL(new URL(""))
@@ -83,6 +104,53 @@ public class needHelpActivity extends AppCompatActivity {
 
         new clearALlCall(getApplicationContext());
         startService(new Intent(getBaseContext(), BackgroundService.class));
+
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+    }
+    public int counter;
+    public void startTimer(){
+        counter=0;
+        countDownTextView.setVisibility(View.VISIBLE);
+        YoYo.with(Techniques.RollIn).duration(600).playOn(countDownTextView);
+
+        new CountDownTimer(4000, 1000){
+            public void onTick(long millisUntilFinished){
+                countDownTextView.setText("refreshing in "+String.valueOf(4-counter));
+                counter++;
+            }
+            public  void onFinish(){
+                YoYo.with(Techniques.RollOut).duration(600).playOn(countDownTextView);
+                swipeRefreshLayout.setRefreshing(true);
+                getAvailableList();
+            }
+        }.start();
+    }
+    private void setRefreshRate() {
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                try{
+                    startTimer();
+
+                }
+                catch (Exception e) {
+                    // TODO: handle exception
+                }
+                finally{
+                    //also call the same runnable to call it at regular interval
+                    handler.postDelayed(this, 30000);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 30000);
     }
 
 
@@ -94,7 +162,7 @@ public class needHelpActivity extends AppCompatActivity {
 
     private void getAvailableList() {
 
-        reference_fields.addValueEventListener(new ValueEventListener() {
+        reference_fields.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -104,15 +172,22 @@ public class needHelpActivity extends AppCompatActivity {
                         for(DataSnapshot snap : childSnapshot.getChildren()){
                             users.add(snap.getKey());
                         }
-                        availableFieldModel model=new availableFieldModel(childSnapshot.getKey(),users);
+                        availableFieldModel model=new availableFieldModel(childSnapshot.getKey().toUpperCase(),users);
                         list.add(model);
-                        infoTxt.setText("😄 Teacher Available");
+                        infoTxt.setText("Connect To Any Fields👇");
+                        infoTxt.setTextColor(getResources().getColor(android.R.color.white));
                     }
 
                 }else{
-                    infoTxt.setText("☹ No Teacher Available");
+                    infoTxt.setText("No Fields Available☹");
+                    infoTxt.setTextColor(getResources().getColor(android.R.color.holo_red_light));
                     list.clear();
 
+                }
+                swipeRefreshLayout.setRefreshing(false);
+                if(!first_time){
+                    setRefreshRate();
+                    first_time=true;
                 }
                 needHelpAdapter.notifyDataSetChanged();
             }
@@ -141,10 +216,37 @@ public class needHelpActivity extends AppCompatActivity {
         int random=getRandomValue(model.getAvaiableList().size()-1);
         String key=model.getAvaiableList().get(random);
         loadingDialog.dismissDialog();
-        connectToJitsi(key,context);
+        confirmConnection(key,context);
+
 
     }
 
+    private void confirmConnection(String key, Context context) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        builder1.setMessage("Confirm connection!");
+        builder1.setCancelable(false);
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                        connectToJitsi(key,context);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
 
 
     @Override

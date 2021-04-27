@@ -38,12 +38,12 @@ public class SlidePagerAdapter extends PagerAdapter {
         textView.setText(list.get(position).getText());
 
 
-        if (position==0){
-            ConstraintLayout mainLayout=layoutscreen.findViewById(R.id.mainLayout);
-            mainLayout.setBackgroundResource(list.get(position).getImageResource());
-        }else{
+//        if (position==0){
+//            ConstraintLayout mainLayout=layoutscreen.findViewById(R.id.mainLayout);
+//            mainLayout.setBackgroundResource(list.get(position).getImageResource());
+//        }else{
             imageView.setImageResource(list.get(position).getImageResource());
-        }
+    //    }
         container.addView(layoutscreen);
         return  layoutscreen;
 

@@ -1,6 +1,7 @@
 package com.nsa.CodingAid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -43,6 +44,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hotchemi.android.rate.AppRate;
 
 
 import com.nsa.CodingAid.Model.firebaseModel;
@@ -88,6 +90,23 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
         adViewList.add(findViewById(R.id.adView1));
         adViewList.add(findViewById(R.id.adView2));
         adViewList.add(findViewById(R.id.adView3));
+        AppRate.with(this)
+
+                // default 10
+                .setInstallDays(1)
+
+                // default 10
+                .setLaunchTimes(3)
+
+                // default 1
+                .setRemindInterval(1)
+                .monitor();
+
+        // Show a dialogue
+        // if meets conditions
+        AppRate
+                .showRateDialogIfMeetsConditions(
+                        this);
 
 
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -224,7 +243,7 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
     }
 
     private void notVerified() {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(WelcomeActivity.this);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(WelcomeActivity.this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         builder1.setMessage("You Are Not Verified Yet!\nWants to change fields or platform?");
         builder1.setCancelable(false);
         builder1.setPositiveButton(
@@ -283,4 +302,16 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
     }
 
 
+    public void shareapp(View view) {
+        try {
+            ShareCompat.IntentBuilder.from(WelcomeActivity.this)
+                    .setType("text/plain")
+                    .setChooserTitle("Share Coding Aid to Friends")
+                    .setText("http://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
+                    .startChooser();
+
+        } catch(Exception e) {
+            //e.toString();
+        }
+    }
 }

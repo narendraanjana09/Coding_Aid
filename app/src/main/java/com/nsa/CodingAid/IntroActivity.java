@@ -42,7 +42,7 @@ public class IntroActivity extends AppCompatActivity {
         skip_button=findViewById(R.id.button_skip);
 
         list=new ArrayList<>();
-        list.add(new SlideModel("",R.drawable.scrennshot_intro));
+        list.add(new SlideModel("Coding Aid Intro",R.drawable.scrennshot_intro));
         list.add(new SlideModel("Start With\nSign-In!😊",R.drawable.screenshot_signin));
         list.add(new SlideModel("Choose Your\nPath!\n1.Need Help.   2.Helper",R.drawable.screenshot_welocme));
         list.add(new SlideModel("1.Select a Field in\nwhich You Have Doubt!",R.drawable.screenshot_need_help));

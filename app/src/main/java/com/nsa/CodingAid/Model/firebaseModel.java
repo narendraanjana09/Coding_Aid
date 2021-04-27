@@ -7,6 +7,7 @@ public class firebaseModel {
     PlatformInfo platform;
     String connectedTeacher;
     String id;
+    String dateOfJoining;
     String token;
     boolean verified;
     ArrayList<String> fields;
@@ -14,7 +15,7 @@ public class firebaseModel {
     public firebaseModel() {
     }
 
-    public firebaseModel(String name, PlatformInfo platform, String connectedTeacher, String id, String token, boolean verified, ArrayList<String> fields) {
+    public firebaseModel(String name, PlatformInfo platform, String connectedTeacher, String id, String token, boolean verified, ArrayList<String> fields, String dateOfJoining) {
         this.name = name;
         this.platform = platform;
         this.connectedTeacher = connectedTeacher;
@@ -22,6 +23,15 @@ public class firebaseModel {
         this.token = token;
         this.verified = verified;
         this.fields = fields;
+        this.dateOfJoining=dateOfJoining;
+    }
+
+    public String getDateOfJoining() {
+        return dateOfJoining;
+    }
+
+    public void setDateOfJoining(String dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
     }
 
     public String getName() {

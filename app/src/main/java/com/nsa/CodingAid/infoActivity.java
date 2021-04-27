@@ -1,11 +1,15 @@
 package com.nsa.CodingAid;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -68,5 +72,13 @@ public class infoActivity extends AppCompatActivity {
         Uri uri = Uri.parse("https://twitter.com/AanjanaNarendr");
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
+    }
+
+    public void copyEmail(View view) {
+        ClipboardManager clipboard = (ClipboardManager)
+                getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("simple text", "narendraanjana09@gmail.com");
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(infoActivity.this, "Email Copied", Toast.LENGTH_SHORT).show();
     }
 }

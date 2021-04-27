@@ -32,8 +32,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import com.nsa.CodingAid.Model.FieldsModel;
 import com.nsa.CodingAid.Model.firebaseModel;
@@ -67,7 +70,7 @@ public class helperActivity extends AppCompatActivity{
     Spinner selectPFSpinner;
     ArrayList<String> platformsList;
     PlatformSpinnerAdapter spinnerAdapter;
-    firebaseModel model;
+    firebaseModel model1,model2;
 
     private String user_token="";
 
@@ -143,8 +146,8 @@ public class helperActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    model = dataSnapshot.getValue(firebaseModel.class);
-                    createChanges(model);
+                    model1 = dataSnapshot.getValue(firebaseModel.class);
+                    createChanges(model1);
 
                 }
             }
@@ -171,7 +174,11 @@ public class helperActivity extends AppCompatActivity{
         setAdapter();
 
     }
-
+    private String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
 
     public  void upload(View view) {
 
@@ -180,7 +187,7 @@ public class helperActivity extends AppCompatActivity{
             String token = user_token;
 
             if (needEdit && verifed) {
-                model = new firebaseModel(name, model.getPlatform(), "null",fuser.getUid(), token, model.isVerified(), selectedList);
+                model2 = new firebaseModel(name, model1.getPlatform(), "null",fuser.getUid(), token, model1.isVerified(), selectedList,model1.getDateOfJoining());
             } else {
                 String platformName = platform_edittext.getText().toString();
                 if (platformName.length() < 2) {
@@ -194,20 +201,25 @@ public class helperActivity extends AppCompatActivity{
                     }
                 }
                 PlatformInfo info = new PlatformInfo(selectedPlatformName, platformName);
-                model = new firebaseModel(name, info, "null",fuser.getUid(),token,false, selectedList);
+
+                model2 = new firebaseModel(name, info, "null",fuser.getUid(),token,false, selectedList,getDateTime());
                 if (!needEdit) {
 
                     DatabaseReference reference = new Firebase().getFirebaseDatabase().getReference("newhelpers");
-                    reference.child(model.getId()).setValue(name);
+                    reference.child(fuser.getUid()).setValue(name);
                 }
             }
-            reference_users.child(model.getId()).setValue(model);
-            Toast.makeText(this, "Data Uploaded", Toast.LENGTH_SHORT).show();
+
+                reference_users.child(fuser.getUid()).setValue(model2);
+                Toast.makeText(this, "Data Uploaded", Toast.LENGTH_SHORT).show();
+
             nextPage();
 
         }
 
     }
+
+
 
 
     private void getToken() {
@@ -272,8 +284,8 @@ public class helperActivity extends AppCompatActivity{
             spinnerAdapter = new PlatformSpinnerAdapter(this, platformsList);
             selectPFSpinner.setAdapter(spinnerAdapter);
             if(needEdit){
-                selectPFSpinner.setSelection(getIndex(model.getPlatform().getPlatform_name()));
-                platform_edittext.setText(model.getPlatform().getUsername());
+                selectPFSpinner.setSelection(getIndex(model1.getPlatform().getPlatform_name()));
+                platform_edittext.setText(model1.getPlatform().getUsername());
 
             }
             spinnerClick();

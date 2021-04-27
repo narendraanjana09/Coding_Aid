@@ -1,9 +1,11 @@
 package com.nsa.CodingAid;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +24,10 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.review.testing.FakeReviewManager;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.nsa.CodingAid.Services.BackgroundService;
 import com.nsa.CodingAid.ExtraClasses.Firebase;
@@ -54,11 +60,15 @@ public class MainActivity extends AppCompatActivity{
     private BroadcastReceiver NetworkChangeReceiver = null;
 
     private List<AdView> adViewList;
+    private ReviewManager reviewManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        reviewManager = ReviewManagerFactory.create(MainActivity.this);
+
         adViewList=new ArrayList<>();
          getAds();
         fuser=FirebaseAuth.getInstance().getCurrentUser();
@@ -87,6 +97,26 @@ public class MainActivity extends AppCompatActivity{
             editor.apply();
             subscribeUserForNotification();
         }
+    }
+
+
+
+    public void showRateApp(View view) {
+        com.google.android.play.core.tasks.Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // We can get the ReviewInfo object
+                ReviewInfo reviewInfo = task.getResult();
+                com.google.android.play.core.tasks.Task<Void> flow = reviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
+                flow.addOnCompleteListener(task1 -> {
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                    // matter the result, we continue our app flow.
+                });
+            } else {
+                // There was some problem, log or handle the error code.
+            }
+        });
     }
 
     private void getAds() {

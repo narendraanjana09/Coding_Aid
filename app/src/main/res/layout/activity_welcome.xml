@@ -138,6 +138,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
+        android:weightSum="1"
         android:gravity="center"
         >
 
@@ -153,6 +154,21 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textStyle="bold" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.54"
+            />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/uploadBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="shareapp"
+            android:backgroundTint="@color/whiteextra"
+            app:fabSize="normal"
+            android:tint="@color/black"
+            android:src="@drawable/share"
+            />
 
     </LinearLayout>
 </LinearLayout>

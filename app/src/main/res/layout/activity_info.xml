@@ -70,6 +70,30 @@
         android:textColor="@color/whiteextra"
         android:textSize="25sp"
        />
+    <TextView
+        android:id="@+id/contactMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/handlee"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:text="Contact Me:-"
+        android:textColor="@color/whiteextra"
+        android:textSize="25sp"
+        />
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/handlee"
+        android:textStyle="bold"
+        android:onClick="copyEmail"
+        android:drawableRight="@drawable/copy"
+        android:layout_marginTop="10dp"
+        android:text="narendraanjana09@gmail.com  "
+        android:textColor="@color/whiteextra"
+        android:textSize="25sp"
+        />
 </LinearLayout>
     <LinearLayout
         android:id="@+id/links"
@@ -86,6 +110,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="linkLinkedIn"
+            android:tooltipText="Linked In"
             app:srcCompat="@drawable/linkedin_icon" />
         <ImageView
             android:id="@+id/instagramicon"
@@ -93,6 +118,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:tooltipText="Instagram"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:onClick="linkInstagram"
@@ -103,6 +129,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:tooltipText="Twitter"
             android:onClick="linkTwitter"
             app:srcCompat="@drawable/twitter_icon" />
     </LinearLayout>

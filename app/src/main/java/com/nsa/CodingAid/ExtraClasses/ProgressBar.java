@@ -6,7 +6,7 @@ import android.content.Context;
 public class ProgressBar {
     private ProgressDialog progressDialog;
     public ProgressBar(Context context,String message) {
-        progressDialog = new ProgressDialog(context);
+        progressDialog = new ProgressDialog(context,ProgressDialog.THEME_DEVICE_DEFAULT_DARK);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(message);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
