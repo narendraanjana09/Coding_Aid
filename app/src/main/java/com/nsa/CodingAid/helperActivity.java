@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -39,7 +38,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.nsa.CodingAid.Model.FieldsModel;
-import com.nsa.CodingAid.Model.firebaseModel;
+import com.nsa.CodingAid.Model.FirebaseModel;
 import com.google.firebase.database.ValueEventListener;
 
 public class helperActivity extends AppCompatActivity{
@@ -70,7 +69,7 @@ public class helperActivity extends AppCompatActivity{
     Spinner selectPFSpinner;
     ArrayList<String> platformsList;
     PlatformSpinnerAdapter spinnerAdapter;
-    firebaseModel model1,model2;
+    FirebaseModel model1;
 
     private String user_token="";
 
@@ -146,7 +145,7 @@ public class helperActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    model1 = dataSnapshot.getValue(firebaseModel.class);
+                    model1 = dataSnapshot.getValue(FirebaseModel.class);
                     createChanges(model1);
 
                 }
@@ -159,7 +158,7 @@ public class helperActivity extends AppCompatActivity{
         });
     }
 
-    private void createChanges(firebaseModel model) {
+    private void createChanges(FirebaseModel model) {
 
         ArrayList<String> flist=model.getFields();
         selectedList=flist;
@@ -181,13 +180,13 @@ public class helperActivity extends AppCompatActivity{
     }
 
     public  void upload(View view) {
-
+         FirebaseModel model2;
         String name=fuser.getDisplayName();
         if(!user_token.equals("")) {
             String token = user_token;
 
             if (needEdit && verifed) {
-                model2 = new firebaseModel(name, model1.getPlatform(), "null",fuser.getUid(), token, model1.isVerified(), selectedList,model1.getDateOfJoining());
+                model2 = new FirebaseModel(name, model1.getPlatform(), "null",fuser.getUid(),model1.getDateOfJoining(),token, model1.isVerified(), selectedList);
             } else {
                 String platformName = platform_edittext.getText().toString();
                 if (platformName.length() < 2) {
@@ -200,9 +199,9 @@ public class helperActivity extends AppCompatActivity{
                         Toast.makeText(this, "Please Enter Valid Platform Name", Toast.LENGTH_SHORT).show();
                     }
                 }
-                PlatformInfo info = new PlatformInfo(selectedPlatformName, platformName);
+                PlatformInfo platformInfo = new PlatformInfo(selectedPlatformName, platformName);
 
-                model2 = new firebaseModel(name, info, "null",fuser.getUid(),token,false, selectedList,getDateTime());
+                model2 = new FirebaseModel(name, platformInfo, "null",fuser.getUid(),getDateTime(),token,false, selectedList);
                 if (!needEdit) {
 
                     DatabaseReference reference = new Firebase().getFirebaseDatabase().getReference("newhelpers");

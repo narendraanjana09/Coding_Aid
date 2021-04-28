@@ -16,9 +16,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -28,7 +26,7 @@ import com.nsa.CodingAid.ExtraClasses.Firebase;
 import com.nsa.CodingAid.ExtraClasses.LoadingDialog;
 import com.nsa.CodingAid.ExtraClasses.clearALlCall;
 import com.nsa.CodingAid.Model.availableFieldModel;
-import com.nsa.CodingAid.Model.firebaseModel;
+import com.nsa.CodingAid.Model.FirebaseModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,8 +41,6 @@ import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -54,7 +50,7 @@ public class needHelpActivity extends AppCompatActivity {
     TextView infoTxt,countDownTextView;
     DatabaseReference reference_fields=new Firebase().getReference_fields()
             ,reference_users=new Firebase().getReference_users();
-    firebaseModel model1,model2;
+    FirebaseModel model1,model2;
     NeedHelpAdapter needHelpAdapter;
     List<availableFieldModel> list=new ArrayList<>();
 
@@ -261,7 +257,7 @@ public class needHelpActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    model1 = dataSnapshot.getValue(firebaseModel.class);
+                    model1 = dataSnapshot.getValue(FirebaseModel.class);
                     if(!(model1.getConnectedTeacher() ==null) &&!model1.getConnectedTeacher().equals("null")){
                         checkOnline(model1.getConnectedTeacher());
                         getList(model1.getConnectedTeacher(),false);
@@ -299,15 +295,15 @@ public class needHelpActivity extends AppCompatActivity {
         });
     }
 
-    private void createChanges(boolean delete,firebaseModel model) {
+    private void createChanges(boolean delete, FirebaseModel model) {
 
         for(int i=0;i<model.getFields().size();i++){
             if(!delete){
                 if(teacherOnline) {
-                    reference_fields.child(model.getFields().get(i)).child(model.getId()).setValue(model.getName());
+                    reference_fields.child(model.getFields().get(i)).child(model.getUid()).setValue(model.getName());
                 }}else{
                 if(!teacherOnline){
-                    reference_fields.child(model.getFields().get(i)).child(model.getId()).removeValue();
+                    reference_fields.child(model.getFields().get(i)).child(model.getUid()).removeValue();
                 }}
         }
 
@@ -349,7 +345,7 @@ public class needHelpActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    model2 = dataSnapshot.getValue(firebaseModel.class);
+                    model2 = dataSnapshot.getValue(FirebaseModel.class);
                     createChanges(delete,model2);
 
 

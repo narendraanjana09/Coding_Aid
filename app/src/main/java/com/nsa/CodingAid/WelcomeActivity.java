@@ -47,7 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import hotchemi.android.rate.AppRate;
 
 
-import com.nsa.CodingAid.Model.firebaseModel;
+import com.nsa.CodingAid.Model.FirebaseModel;
 import com.nsa.CodingAid.Services.NetworkChangeReceiver;
 import com.squareup.picasso.Picasso;
 
@@ -184,7 +184,7 @@ public class WelcomeActivity extends AppCompatActivity  implements PopupMenu.OnM
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    firebaseModel model=dataSnapshot.getValue(firebaseModel.class);
+                    FirebaseModel model=dataSnapshot.getValue(FirebaseModel.class);
                     fieldExist=true;
                     if(model.isVerified()){
                         setSharedPrefernces();

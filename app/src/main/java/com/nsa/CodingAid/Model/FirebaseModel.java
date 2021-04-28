@@ -2,36 +2,28 @@ package com.nsa.CodingAid.Model;
 
 import java.util.ArrayList;
 
-public class firebaseModel {
+public class FirebaseModel {
     String name;
     PlatformInfo platform;
     String connectedTeacher;
-    String id;
+    String uid;
     String dateOfJoining;
     String token;
     boolean verified;
     ArrayList<String> fields;
 
-    public firebaseModel() {
+    public FirebaseModel() {
     }
 
-    public firebaseModel(String name, PlatformInfo platform, String connectedTeacher, String id, String token, boolean verified, ArrayList<String> fields, String dateOfJoining) {
+    public FirebaseModel(String name, PlatformInfo platform, String connectedTeacher, String uid, String dateOfJoining, String token, boolean verified, ArrayList<String> fields) {
         this.name = name;
         this.platform = platform;
         this.connectedTeacher = connectedTeacher;
-        this.id = id;
+        this.uid = uid;
+        this.dateOfJoining = dateOfJoining;
         this.token = token;
         this.verified = verified;
         this.fields = fields;
-        this.dateOfJoining=dateOfJoining;
-    }
-
-    public String getDateOfJoining() {
-        return dateOfJoining;
-    }
-
-    public void setDateOfJoining(String dateOfJoining) {
-        this.dateOfJoining = dateOfJoining;
     }
 
     public String getName() {
@@ -58,12 +50,20 @@ public class firebaseModel {
         this.connectedTeacher = connectedTeacher;
     }
 
-    public String getId() {
-        return id;
+    public String getUid() {
+        return uid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getDateOfJoining() {
+        return dateOfJoining;
+    }
+
+    public void setDateOfJoining(String dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
     }
 
     public String getToken() {

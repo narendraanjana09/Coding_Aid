@@ -1,11 +1,9 @@
 package com.nsa.CodingAid;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +13,6 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -27,12 +24,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.review.testing.FakeReviewManager;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.nsa.CodingAid.Services.BackgroundService;
 import com.nsa.CodingAid.ExtraClasses.Firebase;
 import com.nsa.CodingAid.ExtraClasses.clearALlCall;
-import com.nsa.CodingAid.Model.firebaseModel;
+import com.nsa.CodingAid.Model.FirebaseModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,7 +50,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
     String sessionId;
     FirebaseUser fuser;
-    firebaseModel model;
+    FirebaseModel model;
     DatabaseReference reference_users,reference_fields ;
     String prevStarted = "prevStarted";
     private BroadcastReceiver NetworkChangeReceiver = null;
@@ -164,7 +160,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    model = dataSnapshot.getValue(firebaseModel.class);
+                    model = dataSnapshot.getValue(FirebaseModel.class);
 
 
                 }else{
@@ -207,9 +203,9 @@ public class MainActivity extends AppCompatActivity{
 
         for(int i=0;i<model.getFields().size();i++){
             if(b){
-                reference_fields.child(model.getFields().get(i)).child(model.getId()).setValue(model.getName());
+                reference_fields.child(model.getFields().get(i)).child(model.getUid()).setValue(model.getName());
             }else{
-                reference_fields.child(model.getFields().get(i)).child(model.getId()).removeValue();
+                reference_fields.child(model.getFields().get(i)).child(model.getUid()).removeValue();
             }
         }
 
