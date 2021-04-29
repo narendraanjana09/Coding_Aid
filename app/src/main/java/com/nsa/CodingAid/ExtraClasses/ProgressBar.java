@@ -12,6 +12,9 @@ public class ProgressBar {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setProgress(0);
     }
+    public void setMessage(String message){
+        progressDialog.setMessage(message);
+    }
     public void show(){
         progressDialog.show();
     }

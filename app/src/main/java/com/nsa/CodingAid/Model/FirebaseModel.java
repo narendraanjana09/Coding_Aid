@@ -11,11 +11,13 @@ public class FirebaseModel {
     String token;
     boolean verified;
     ArrayList<String> fields;
+    String resumeLink;
+
 
     public FirebaseModel() {
     }
 
-    public FirebaseModel(String name, PlatformInfo platform, String connectedTeacher, String uid, String dateOfJoining, String token, boolean verified, ArrayList<String> fields) {
+    public FirebaseModel(String name, PlatformInfo platform, String connectedTeacher, String uid, String dateOfJoining, String token, boolean verified, ArrayList<String> fields, String resumeLink) {
         this.name = name;
         this.platform = platform;
         this.connectedTeacher = connectedTeacher;
@@ -24,6 +26,15 @@ public class FirebaseModel {
         this.token = token;
         this.verified = verified;
         this.fields = fields;
+        this.resumeLink = resumeLink;
+    }
+
+    public String getResumeLink() {
+        return resumeLink;
+    }
+
+    public void setResumeLink(String resumeLink) {
+        this.resumeLink = resumeLink;
     }
 
     public String getName() {

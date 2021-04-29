@@ -5,7 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,13 +27,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.nsa.CodingAid.Adapter.CustomAdapter;
 import com.nsa.CodingAid.Adapter.PlatformSpinnerAdapter;
 import com.nsa.CodingAid.ExtraClasses.Firebase;
+import com.nsa.CodingAid.ExtraClasses.ProgressBar;
 import com.nsa.CodingAid.ExtraClasses.clearALlCall;
 import com.nsa.CodingAid.Model.PlatformInfo;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,10 +57,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.UUID;
 
 import com.nsa.CodingAid.Model.FieldsModel;
 import com.nsa.CodingAid.Model.FirebaseModel;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 public class helperActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
@@ -54,7 +78,7 @@ public class helperActivity extends AppCompatActivity{
     public int counter=0;
 
     LinearLayout platform_view;
-    TextView platform_textview;
+    TextView platform_textview,resumeTextView;
     EditText platform_edittext;
 
     boolean needEdit=false;
@@ -69,12 +93,15 @@ public class helperActivity extends AppCompatActivity{
     Spinner selectPFSpinner;
     ArrayList<String> platformsList;
     PlatformSpinnerAdapter spinnerAdapter;
-    FirebaseModel model1;
+    FirebaseModel model1=null;
 
     private String user_token="";
 
-
-
+    FirebaseStorage storage;
+    StorageReference storageReference;
+    private Uri resumePath=null;
+    String resumeLink=null;
+    boolean resumeChoosen=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +118,8 @@ public class helperActivity extends AppCompatActivity{
 
 
 
-
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         uploadButton=findViewById(R.id.uploadBtn);
         cancelButton=findViewById(R.id.cancelbtn);
 
@@ -186,7 +214,8 @@ public class helperActivity extends AppCompatActivity{
             String token = user_token;
 
             if (needEdit && verifed) {
-                model2 = new FirebaseModel(name, model1.getPlatform(), "null",fuser.getUid(),model1.getDateOfJoining(),token, model1.isVerified(), selectedList);
+                model2 = new FirebaseModel(name, model1.getPlatform(), "null",fuser.getUid(),model1.getDateOfJoining(),token, model1.isVerified(), selectedList,model1.getResumeLink());
+                uploadModel(model2);
             } else {
                 String platformName = platform_edittext.getText().toString();
                 if (platformName.length() < 2) {
@@ -197,25 +226,52 @@ public class helperActivity extends AppCompatActivity{
                     selectedPlatformName=platformOtherEditText.getText().toString();
                     if(selectedPlatformName.length()<=2){
                         Toast.makeText(this, "Please Enter Valid Platform Name", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                 }
+
                 PlatformInfo platformInfo = new PlatformInfo(selectedPlatformName, platformName);
+                model2 = new FirebaseModel(name, platformInfo, "null",fuser.getUid(),getDateTime(),token,false, selectedList,resumeLink);
 
-                model2 = new FirebaseModel(name, platformInfo, "null",fuser.getUid(),getDateTime(),token,false, selectedList);
-                if (!needEdit) {
+                if(resumePath==null){
+                    Toast.makeText(this, "Please Select Your Resume?", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    if(model1!=null){
+                        if(resumeChoosen) {
 
-                    DatabaseReference reference = new Firebase().getFirebaseDatabase().getReference("newhelpers");
-                    reference.child(fuser.getUid()).setValue(name);
+                            uploadResume(model2);
+                        }else{
+                            uploadModel(model2);
+                            }
+                    }else {
+                        uploadResume(model2);
+                    }
                 }
+
+
             }
 
-                reference_users.child(fuser.getUid()).setValue(model2);
-                Toast.makeText(this, "Data Uploaded", Toast.LENGTH_SHORT).show();
 
-            nextPage();
 
         }
 
+    }
+
+    private void uploadModel(FirebaseModel model2) {
+        reference_users.child(fuser.getUid()).setValue(model2);
+        Toast.makeText(this, "Data Uploaded", Toast.LENGTH_SHORT).show();
+
+        nextPage();
+    }
+
+    private void uploadOtherData(FirebaseModel model2) {
+        if (!needEdit) {
+
+            DatabaseReference reference = new Firebase().getFirebaseDatabase().getReference("newhelpers");
+            reference.child(fuser.getUid()).setValue(model2.getName());
+        }
+        uploadModel(model2);
     }
 
 
@@ -276,8 +332,10 @@ public class helperActivity extends AppCompatActivity{
 
             platform_view=findViewById(R.id.platFormView);
             platform_textview=findViewById(R.id.selectPlatFormTextView);
+            resumeTextView=findViewById(R.id.resumeTextView);
             platform_edittext=findViewById(R.id.platformEditText);
-
+            TextView noteTV=findViewById(R.id.noteTextView);
+            setVibrationAnim(noteTV);
             getList();
 
             spinnerAdapter = new PlatformSpinnerAdapter(this, platformsList);
@@ -285,6 +343,8 @@ public class helperActivity extends AppCompatActivity{
             if(needEdit){
                 selectPFSpinner.setSelection(getIndex(model1.getPlatform().getPlatform_name()));
                 platform_edittext.setText(model1.getPlatform().getUsername());
+                resumeTextView.setText("resume.pdf");
+                resumePath= Uri.parse(model1.getResumeLink());
 
             }
             spinnerClick();
@@ -372,4 +432,194 @@ public class helperActivity extends AppCompatActivity{
     public void cancelOther(View view) {
         otherPFVisible(false, view);
     }
+
+    private static final int PICK_PDF_FILE = 2;
+
+    public void selectDocument(View view) {
+        if(resumePath==null){
+        chooseResume();
+        }else{
+            getPdfAction();
+        }
+    }
+
+    private void chooseResume() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/pdf");
+
+        // Optionally, specify a URI for the file that should appear in the
+        // system file picker when it loads.
+     //   intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
+
+        startActivityForResult(intent, PICK_PDF_FILE);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode ==PICK_PDF_FILE
+                && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that
+            // the user selected.
+
+            if (resultData != null) {
+                resumePath=resultData.getData();
+                getPdfName(resumePath);
+                resumeChoosen=true;
+
+                // Perform operations on the document using its URI.
+            }
+        }
+    }
+    public void getPdfAction(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        builder1.setMessage("What You Wanna Do?");
+        builder1.setCancelable(false);
+        builder1.setPositiveButton(
+                "Open",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                        openPdf();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "Choose Another",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        chooseResume();
+
+
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    private void openPdf() {
+        Intent intent=new Intent(helperActivity.this,View_Pdf_Activity.class);
+        if(!resumeChoosen){
+            intent.putExtra("link", model1.getResumeLink());
+        }else{
+            intent.putExtra("uri",resumePath.toString());
+        }
+
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+    }
+    private void setVibrationAnim(TextView noteTV) {
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                try{
+                    YoYo.with(Techniques.Flash).duration(200).playOn(noteTV);
+                }
+                catch (Exception e) {
+                    // TODO: handle exception
+                }
+                finally{
+                    //also call the same runnable to call it at regular interval
+                    handler.postDelayed(this, 2000);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 2000);
+    }
+
+    public void getPdfName(Uri uri) {
+
+        // The query, because it only applies to a single document, returns only
+        // one row. There's no need to filter, sort, or select fields,
+        // because we want all fields for one document.
+        Cursor cursor = this.getContentResolver()
+                .query(uri, null, null, null, null, null);
+
+        try {
+            // moveToFirst() returns false if the cursor has 0 rows. Very handy for
+            // "if there's anything to look at, look at it" conditionals.
+            if (cursor != null && cursor.moveToFirst()) {
+
+                // Note it's called "Display Name". This is
+                // provider-specific, and might not necessarily be the file name.
+                String displayName = cursor.getString(
+                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                resumeTextView.setText(displayName);
+               }
+        } finally {
+            cursor.close();
+        }
+    }
+    private void uploadResume(FirebaseModel model2)
+    {
+        if (resumePath != null) {
+
+            // Code for showing progressDialog while uploading
+            ProgressBar progressBar=new ProgressBar(this,"Uploading");
+           progressBar.show();
+
+            // Defining the child of storageReference
+            StorageReference ref
+                    = storageReference
+                    .child(
+                            "resumes/"
+                                    + fuser.getUid());
+
+            UploadTask uploadTask = ref.putFile(resumePath);
+            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress
+                            = (100.0
+                            * taskSnapshot.getBytesTransferred()
+                            / taskSnapshot.getTotalByteCount());
+
+                    progressBar.setMessage(
+                            "Uploaded "
+                                    + (int)progress + "%");
+                }
+            });
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+
+                    progressBar.hide();
+
+                    if (task.isSuccessful()) {
+
+                        Toast.makeText(helperActivity.this, "Resume Uploaded", Toast.LENGTH_SHORT).show();
+                        Uri downloadUri = task.getResult();
+                        resumeLink=downloadUri.toString();
+                        model2.setResumeLink(resumeLink);
+                        uploadOtherData(model2);
+                    } else {
+                        // Handle failures
+                        // ...
+                    }
+                }
+            });
+
+
+        }
+    }
+
+
 }
