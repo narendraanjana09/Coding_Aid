@@ -3,6 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
+    android.ndkVersion '22.1.7171670'
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
 
@@ -17,6 +18,11 @@ android {
     }
 
     buildTypes {
+        externalNativeBuild {
+            cmake {
+                path "CMakeLists.txt"
+            }
+        }
         release {
             minifyEnabled false
 
@@ -28,11 +34,10 @@ android {
             // the Android Gradle plugin. To learn more, go to the section about
             // R8 configuration files.
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+}
     }
     compileOptions {
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }

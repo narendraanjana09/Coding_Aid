@@ -37,6 +37,13 @@ public class SignInActivity extends AppCompatActivity {
     ProgressBar progressBar;
     String prevStarted = "SignedIn";
     SharedPreferences sharedpreferences;
+    public static native String baseUrlFromJNI();
+
+
+    static {
+        System.loadLibrary("native-lib");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +52,12 @@ public class SignInActivity extends AppCompatActivity {
         if (sharedpreferences.getBoolean(prevStarted, false)){
             updateUI();
         }
+
        mfirebaseAuth=FirebaseAuth.getInstance();
        progressBar=new ProgressBar(SignInActivity.this,"connecting...");
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
+                .requestIdToken(baseUrlFromJNI())
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
