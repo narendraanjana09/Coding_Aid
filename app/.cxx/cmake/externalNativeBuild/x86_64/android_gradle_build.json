@@ -1,0 +1,44 @@
+{
+  "stringTable": {
+    "0": "C:/Users/Asus/Desktop/GooglePlayApps/CodingAid/CodingAid/app/.cxx/cmake/externalNativeBuild/x86_64",
+    "1": "--target=x86_64-none-linux-android23 --gcc-toolchain=C:/Users/Asus/AppData/Local/Android/Sdk/ndk/22.1.7171670/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/Asus/AppData/Local/Android/Sdk/ndk/22.1.7171670/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dnative_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O2 -DNDEBUG -fPIC"
+  },
+  "buildFiles": [
+    "C:\\Users\\Asus\\Desktop\\GooglePlayApps\\CodingAid\\CodingAid\\app\\CMakeLists.txt",
+    "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\ndk\\22.1.7171670\\build\\cmake\\android.toolchain.cmake",
+    "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\ndk\\22.1.7171670\\build\\cmake\\platforms.cmake",
+    "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\ndk\\22.1.7171670\\build\\cmake\\compiler_id.cmake"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\Asus\\Desktop\\GooglePlayApps\\CodingAid\\CodingAid\\app\\.cxx\\cmake\\externalNativeBuild\\x86_64\" clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"C:\\Users\\Asus\\Desktop\\GooglePlayApps\\CodingAid\\CodingAid\\app\\.cxx\\cmake\\externalNativeBuild\\x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Release-x86_64": {
+      "buildCommand": "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\Asus\\Desktop\\GooglePlayApps\\CodingAid\\CodingAid\\app\\.cxx\\cmake\\externalNativeBuild\\x86_64\" native-lib",
+      "buildType": "release",
+      "toolchain": "3011095326",
+      "abi": "x86_64",
+      "artifactName": "native-lib",
+      "files": [
+        {
+          "src": "C:\\Users\\Asus\\Desktop\\GooglePlayApps\\CodingAid\\CodingAid\\app\\src\\main\\java\\com\\nsa\\CodingAid\\ExtraClasses\\native-lib.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "C:\\Users\\Asus\\Desktop\\GooglePlayApps\\CodingAid\\CodingAid\\app\\build\\intermediates\\cmake\\externalNativeBuild\\obj\\x86_64\\libnative-lib.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "3011095326": {
+      "cppCompilerExecutable": "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\ndk\\22.1.7171670\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

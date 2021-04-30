@@ -1,0 +1,6 @@
+# ninja log v5
+0	13	0	clean	388e14b092b2d51c
+1	1294	641381183	CMakeFiles/native-lib.dir/src/main/java/com/nsa/CodingAid/ExtraClasses/native-lib.cpp.o	10ce8c0b65eb5076
+1300	1631	641381183	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so	b571bc64bb8dfba9
+5	2055	641381638	CMakeFiles/native-lib.dir/src/main/java/com/nsa/CodingAid/ExtraClasses/native-lib.cpp.o	10ce8c0b65eb5076
+2055	2353	641381638	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so	b571bc64bb8dfba9

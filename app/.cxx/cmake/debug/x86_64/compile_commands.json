@@ -1,0 +1,7 @@
+[
+{
+  "directory": "C:/Users/Asus/Desktop/GooglePlayApps/CodingAid/CodingAid/app/.cxx/cmake/debug/x86_64",
+  "command": "C:\\Users\\Asus\\AppData\\Local\\Android\\Sdk\\ndk\\22.1.7171670\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=x86_64-none-linux-android23 --gcc-toolchain=C:/Users/Asus/AppData/Local/Android/Sdk/ndk/22.1.7171670/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/Asus/AppData/Local/Android/Sdk/ndk/22.1.7171670/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles\\native-lib.dir\\src\\main\\java\\com\\nsa\\CodingAid\\ExtraClasses\\native-lib.cpp.o -c C:\\Users\\Asus\\Desktop\\GooglePlayApps\\CodingAid\\CodingAid\\app\\src\\main\\java\\com\\nsa\\CodingAid\\ExtraClasses\\native-lib.cpp",
+  "file": "C:/Users/Asus/Desktop/GooglePlayApps/CodingAid/CodingAid/app/src/main/java/com/nsa/CodingAid/ExtraClasses/native-lib.cpp"
+}
+]
